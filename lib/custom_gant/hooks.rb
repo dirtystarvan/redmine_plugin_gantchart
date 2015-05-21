@@ -9,5 +9,7 @@ module CustomGant
     #   :f      => the form object to create additional fields
     render_on :view_projects_show_sidebar_bottom,
               :partial => 'custom/test'
+    render_on :view_layouts_base_html_head,
+              :partial => 'custom/jsinsert'
   end
 end
