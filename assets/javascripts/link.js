@@ -9,7 +9,7 @@ window.onload=function(){
 	var idetifier = url.slice(reg.lastIndex)
 	reg = /^.*\/\/[^\/]+\//
 	var part = reg.exec(url)
-	var href = part + 'diagram/' + idetifier
+	var href = part + 'chart/' + idetifier
 	newDiv.innerHTML = href
 
 	var found = document.getElementById('sidebar')
