@@ -1,4 +1,22 @@
+<% content_for :header_tags do %>
+  <%= javascript_include_tag 'gantt', plugin: 'redmine_custom_gant' %>
+  <%= stylesheet_link_tag 'gantt', plugin: 'redmine_custom_gant' %>
+<% end %>
+
 <h2>Gantt Chart</h2>
 
-<%= @some.name %>
-<%= @descendants %>
+<div style="position:relative" class="Gantt" id="GanttChart"></div>
+<script>
+	var g = new Gantt(document.all.GanttChart);
+	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
+	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
+	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
+	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
+	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
+	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
+	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
+	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
+	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
+	
+	g.Draw();	
+</script>
