@@ -3,20 +3,22 @@
   <%= stylesheet_link_tag 'gantt', plugin: 'redmine_custom_gant' %>
 <% end %>
 
-<h2>Gantt Chart</h2>
+
+	<% def printList(parent) %>
+	<%	parent[:descendants].each do |project| %>
+	<%=		"g.AddTaskDetail(new Task(\'2/11/2008\', \'2/19/2008\'," + "\'" + project.name + "\'" + ", 'Dathq', 50, " + parent[:level].to_s + "));" %>
+	<%		if @projects[project.id][:descendants].any? then printList(@projects[project.id]) end %>
+	<%	end %>
+	<% end %>
+
 
 <div style="position:relative" class="Gantt" id="GanttChart"></div>
+
 <script>
 	var g = new Gantt(document.all.GanttChart);
-	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
-	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
-	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
-	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
-	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
-	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
-	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
-	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
-	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008', '<b>Sample task 1 1</b>', 'Dathq', 50));
+	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008',  <%= "\'" + @root.name.to_s + "\'" %>, 'Dathq', 50, 0));
+	<% printList(@projects[@root.id]) %>
 	
 	g.Draw();	
 </script>
+
