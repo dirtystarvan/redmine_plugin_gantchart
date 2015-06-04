@@ -1,24 +1,35 @@
 <% content_for :header_tags do %>
   <%= javascript_include_tag 'gantt', plugin: 'redmine_custom_gant' %>
+  <%= javascript_include_tag 'handlers', plugin: 'redmine_custom_gant', defer: 'defer' %>
   <%= stylesheet_link_tag 'gantt', plugin: 'redmine_custom_gant' %>
 <% end %>
 
 
 	<% def printList(parent) %>
 	<%	parent[:descendants].each do |project| %>
-	<%=		"g.AddTaskDetail(new Task(\'2/11/2008\', \'2/19/2008\'," + "\'" + project.name + "\'" + ", 'Dathq', 50, " + parent[:level].to_s + "));" %>
+	<%=		"g.AddTaskDetail(new Task(\'2/11/2008\', \'2/19/2008\'," + "\'" + project.name.gsub("\'", "`") + "\'" + ", 'Dathq', 50, " + parent[:level].to_s + ", 1, '#{project.identifier}'));" %>
 	<%		if @projects[project.id][:descendants].any? then printList(@projects[project.id]) end %>
 	<%	end %>
 	<% end %>
 
+<h2> Gantt chart </h2>
+
+<% form_tag({:controller => 'chart', :action => 'index', :months => params[:months], :month => params[:month], :year => params[:year]}, :method => :get, :id => 'query_form') do %>
+	<p>
+	<%= text_field_tag :months, @monthsCounter ,:size => 2 %>
+	<%= label_tag('months', "месяца с", id: 'MLabel') %>
+	<%= select_tag(:month, options_for_select([['Января', 1], ['Февраля', 2], ['Марта', 3], ['Апреля', 4], ['Мая', 5], ['Июня', 6], ['Июля', 7], ['Августа', 8], ['Сентября', 9], ['Октября', 10], ['Ноября', 11], ['Декабря', 12]], @DateSelect.month)) %>
+	<%= select_tag(:year, options_for_select(@years, @DateSelect.year)) %>	
+		
+	<%= submit_tag("Применить", id: "apply") %>
+	</p>
+<% end %>
 
 <div style="position:relative" class="Gantt" id="GanttChart"></div>
 
 <script>
-	var g = new Gantt(document.all.GanttChart);
-	g.AddTaskDetail(new Task('2/11/2008', '2/19/2008',  <%= "\'" + @root.name.to_s + "\'" %>, 'Dathq', 50, 0));
+	var g = new Gantt(document.all.GanttChart, <%= "\'" + @DateFrom.to_s.gsub("-", "/") + "\'" %>, <%= "\'" + @DateTo.to_s.gsub("-", "/") + "\'" %>);
+	g.AddTaskDetail(new Task('2/11/2011', '5/19/2011',  <%= "\'" + @root.name.to_s.gsub("\'", "`") + "\'" %>, 'Dathq', 50, 0, 1, <%= "'#{@root.identifier}'" %>));
 	<% printList(@projects[@root.id]) %>
-	
 	g.Draw();	
 </script>
-

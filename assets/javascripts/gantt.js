@@ -1,11 +1,13 @@
-function Task(from, to, task, resource, progress, level)
+function Task(from, to, task, resource, progress, level, visible, identifier)
 	{
-		var _from = new Date();	
-		var _to = new Date();
+		var _from = new Date("00:00:00");	
+		var _to = new Date("00:00:00");
 		var _task = task;
 		var _resource = resource;						
 		var _progress = progress;
 		var _level = level;
+		var _visible = visible;
+		var _identifier = identifier;
 		var dvArr = from.split('/');
 		_from.setFullYear(parseInt(dvArr[2], 10), parseInt(dvArr[0], 10) - 1, parseInt(dvArr[1], 10));
 		dvArr = to.split('/'); 
@@ -17,9 +19,14 @@ function Task(from, to, task, resource, progress, level)
 		this.getResource = function(){ return _resource};
 		this.getProgress = function(){ return _progress};
 		this.getLevel = function(){ return _level };
+		this.getVisible = function(){ return _visible };
+		this.getID = function(){ return _identifier };
+		this.setTo = function(value){_to = value};
+		this.setFrom = function(value){_from = value};
 	}
+
 	
-	function Gantt(gDiv)
+	function Gantt(gDiv, startDate, dueDate)
 	{
 		var _GanttDiv = gDiv;
 		var _taskList = new Array();		
@@ -28,24 +35,26 @@ function Task(from, to, task, resource, progress, level)
 			_taskList.push(value);
 			
 		}
+
 		this.Draw = function()
 		{
 			var _offSet = 0;
 			var _dateDiff = 0;
 			var _currentDate = new Date();
-			var _maxDate = new Date();
-			var _minDate = new Date();	
+			var _maxDate = new Date(dueDate);
+			var _minDate = new Date(startDate);	
 			var _dTemp = new Date();
 			var _firstRowStr = "<table border=1 style='border-collapse:collapse'><tr><td rowspan='2' width='auto' style='width:auto;'><div class='GTaskTitle' style='width:auto;'>Task</div></td>";
 			var _thirdRow = ""; 
 			var _gStr = "";		
 			var _colSpan = 0;
 			var counter = 0;
+			var url = window.location.toString();
 			
 			_currentDate.setFullYear(_currentDate.getFullYear(), _currentDate.getMonth(), _currentDate.getDate());
 			if(_taskList.length > 0)
 			{
-				_maxDate.setFullYear(_taskList[0].getTo().getFullYear(), _taskList[0].getTo().getMonth(), _taskList[0].getTo().getDate());
+				/*_maxDate.setFullYear(_taskList[0].getTo().getFullYear(), _taskList[0].getTo().getMonth(), _taskList[0].getTo().getDate());
 				_minDate.setFullYear(_taskList[0].getFrom().getFullYear(), _taskList[0].getFrom().getMonth(), _taskList[0].getFrom().getDate());
 				for(i = 0; i < _taskList.length; i++)
 				{
@@ -74,7 +83,7 @@ function Task(from, to, task, resource, progress, level)
 				}
 				
 				//--------------------------------------------------
-				
+				*/
 				_gStr = "";
 				_gStr += "</tr><tr>";
 				_thirdRow = "<tr><td style='position:relative; width=auto;' id='tasklist'></td>";
@@ -127,6 +136,11 @@ function Task(from, to, task, resource, progress, level)
 				
 				_GanttDiv.innerHTML = _gStr;
 
+				var reg = /^.*\/\/[^\/]+\//;
+				var part = reg.exec(url);
+				part += 'projects/';
+				var link = part + _taskList[0].getID();
+
 				var column = document.getElementById('tasklist');
 				var item = document.createElement('div');
 				item.className = 'ProjectName';
@@ -134,9 +148,13 @@ function Task(from, to, task, resource, progress, level)
 				item.style.bottom = '0px';
 				item.style.paddingLeft = '2px';
 				item.style.paddingBottom = '8px';
-				item.style.paddingTop = '10px'
+				item.style.paddingTop = '10px';
+
 				item.innerHTML = _taskList[0].getTask();
+				item.addEventListener("dblclick", function(link) { return function() {document.location.href = link}}(link));
+
 				column.appendChild(item);
+
 				for(i = 1; i < _taskList.length; i++) {
 					item = document.createElement('div');
 					item.className = 'ProjectName';
@@ -147,34 +165,59 @@ function Task(from, to, task, resource, progress, level)
 					item.style.paddingBottom = '8px';
 					
 					item.innerHTML = _taskList[i].getTask();
+
+					link = part + _taskList[i].getID();
+					item.addEventListener("dblclick", function(link) { return function() {document.location.href = link}}(link));
 					column.appendChild(item);
 				}
 
-
+				
 				for(i = 0; i < _taskList.length; i++) //цикл с наслоением полос задач
 				{
-					_offSet = (Date.parse(_taskList[i].getFrom()) - Date.parse(_minDate)) / (24 * 60 * 60 * 1000); //смещение
-					_dateDiff = (Date.parse(_taskList[i].getTo()) - Date.parse(_taskList[i].getFrom())) / (24 * 60 * 60 * 1000) + 1; //длина; +1 затем чтоб полоска заканчивалась в конце дня срока а не в начале
+					if (_taskList[i].getVisible() == 1) {
+						if (_taskList[i].getFrom() < _minDate) {
+							if (_taskList[i].getTo() < _minDate) {
+								continue;
+							} else if (_taskList[i].getTo() > _maxDate) {
+								_taskList[i].setFrom(_minDate);
+								_taskList[i].setTo(_maxDate);
+								_dateDiff = -1;
+							} else {_taskList[i].setFrom(_minDate)}
+						} else if (_taskList[i].getTo() > _maxDate) {
+							if (_taskList[i].getFrom() > _maxDate) {
+								continue;
+							} else {
+								_taskList[i].setTo(_maxDate);
+								_dateDiff = -1;
+							}
+						}
 
-					item = document.createElement('div');
-					item.style.position = "absolute";
-					item.style.top = (20 * (i + 2)) + "px";
-					item.style.left = (Math.round(_offSet) * 27 + column.offsetWidth + 1 ) + "px";
-					item.style.width = (27 * _dateDiff - 1 + 100) + "px";
-					
-					var item2 = document.createElement('div');
-					
-					item2.className = 'GTask';
-					item2.style.float = 'left';
-					item2.style.width = (27 * _dateDiff - 1) + "px"
-					var item3 = document.createElement('div');
-					item3.className = 'GProgress'
-					item3.style.width = _taskList[i].getProgress() + "%"
-					item3.style.overflow = 'hidden'
-					item2.appendChild(item3);
-					item.appendChild(item2);
-					_GanttDiv.appendChild(item)
+						_offSet = (Date.parse(_taskList[i].getFrom()) - Date.parse(_minDate)) / (24 * 60 * 60 * 1000); //смещение
+						_dateDiff += (Date.parse(_taskList[i].getTo()) - Date.parse(_taskList[i].getFrom())) / (24 * 60 * 60 * 1000) + 1; //длина; +1 затем чтоб полоска заканчивалась в конце дня срока а не в начале
+
+						item = document.createElement('div');
+						item.style.position = "absolute";
+						item.title = _taskList[i].getFrom();
+						item.style.top = (20 * (i + 2)) + "px";
+						item.style.left = (_offSet * 27 + column.offsetWidth + 1 ) + "px";
+						item.style.width = (27 * _dateDiff - 1 + 100) + "px";
+						
+						var item2 = document.createElement('div');
+						
+						item2.className = 'GTask';
+						item2.style.float = 'left';
+						item2.style.width = (27 * _dateDiff - 1) + "px"
+						item2.title = _dateDiff;
+						var item3 = document.createElement('div');
+						item3.className = 'GProgress'
+						item3.style.width = _taskList[i].getProgress() + "%"
+						item3.style.overflow = 'hidden'
+						item2.appendChild(item3);
+						item.appendChild(item2);
+						_GanttDiv.appendChild(item)
+					}
 				}
+							
 			}
 		}
 	}		

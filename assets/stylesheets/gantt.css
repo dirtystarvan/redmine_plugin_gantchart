@@ -24,7 +24,7 @@
 		font-weight:bold;	
 	}
 	
-	.GToday
+	.GToDay
 	{
 		background-color: #FDFDE0;	
 	}
@@ -58,4 +58,12 @@
 		height:2px;
 		overflow: hidden;
 		margin-top:5px;
+	}
+
+	.ProjectName {
+		cursor: default;
+	}
+
+	.ProjectName:hover {
+		cursor: default;
 	}
