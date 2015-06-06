@@ -49,11 +49,13 @@ public
 		@DateTo = @DateFrom + params[:months].to_i.month
 		@monthsCounter = params[:months].to_i
 		@DateSelect = @DateFrom
+		if params.has_key?(:check) then @checked = true else @checked = false end
 	else
 		@DateFrom = Date.new(Date.today.year, Date.today.month, 1) - 2.month
 		@DateTo = @DateFrom + 4.month
 		@monthsCounter = 4
 		@DateSelect = Date.today
+		@checked = false
 	end
 		
 	@projects = {} 	

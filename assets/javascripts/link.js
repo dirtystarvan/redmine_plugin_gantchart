@@ -1,7 +1,5 @@
 window.onload=function(){
-	var newDiv = document.createElement('div')
-	newDiv.id = 'test'
-
+	
 	var reg = /^.*\/projects\//g
 	var url = window.location.toString()
 	reg.exec(url)
@@ -10,15 +8,13 @@ window.onload=function(){
 	reg = /^.*\/\/[^\/]+\//
 	var part = reg.exec(url)
 	var href = part + 'chart/' + idetifier
-	newDiv.innerHTML = href
 
 	var found = document.getElementById('sidebar')
-	found.appendChild(newDiv)
-
+	
 	var link = document.createElement('a')
 	link.href = href
-	var linkText = document.createTextNode("Gant!")
+	link.className = "button gray"
+	var linkText = document.createTextNode("Gantt")
 	link.appendChild(linkText)
 	found.appendChild(link)
-	
 }

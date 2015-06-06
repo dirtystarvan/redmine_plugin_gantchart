@@ -8,13 +8,11 @@ function Task(from, to, task, resource, progress, level, visible, identifier)
 		var _level = level;
 		var _visible = visible;
 		var _identifier = identifier;
-		var dvArr = from.split('-');
-		_from.setFullYear(parseInt(dvArr[0], 10), parseInt(dvArr[1], 10) - 1, parseInt(dvArr[2], 10));
-		dvArr = to.split('-'); 
-		_to.setFullYear(parseInt(dvArr[0], 10), parseInt(dvArr[1], 10) - 1, parseInt(dvArr[2], 10));		
+		var dvArr = from.split('/');
+		_from.setFullYear(parseInt(dvArr[2], 10), parseInt(dvArr[0], 10) - 1, parseInt(dvArr[1], 10));
+		dvArr = to.split('/'); 
+		_to.setFullYear(parseInt(dvArr[2], 10), parseInt(dvArr[0], 10) - 1, parseInt(dvArr[1], 10));		
 		
-		alert(dvArr[2]);
-
 		this.getFrom = function(){ return _from};
 		this.getTo = function(){ return _to};
 		this.getTask = function(){ return _task};
@@ -119,7 +117,7 @@ function Task(from, to, task, resource, progress, level, visible, identifier)
 					}					
 					else 
 					{
-						_firstRowStr += "<td class='GMonth' colspan='" + (_colSpan + 1) + "'>" + (_dTemp.getMonth() + 1) + "/" + _dTemp.getFullYear() + "</td>";
+						_firstRowStr += "<td class='GMonth' colspan='" + (_colSpan + 1) + "'>T" + (_dTemp.getMonth() + 1) + "/" + _dTemp.getFullYear() + "</td>";
 						_colSpan = 0;
 						if(_dTemp.getMonth() == 11) //December
 						{
@@ -143,28 +141,9 @@ function Task(from, to, task, resource, progress, level, visible, identifier)
 				part += 'projects/';
 				var link = part + _taskList[0].getID();
 
-
-				function changeClass(event) {
-					var className = event.currentTarget.className;
-					var elements = document.getElementsByClassName(className.split(' ')[2]);
-					
-					function str_replace(search, replace, subject) {
-    					return subject.split(search).join(replace);
-					} 
-					if (className.indexOf('normal') + 1) { //возвращает -1 если не нашлось. 0 в js == false, любое другое число - true
-						for (i=0; i < elements.length; i++) {
-							elements[i].className = str_replace('normal', 'changed', elements[i].className);
-						}
-					} else {
-						for (i=0; i < elements.length; i++) {
-							elements[i].className = str_replace('changed', 'normal', elements[i].className);
-						}
-					}
-				}
-
 				var column = document.getElementById('tasklist');
 				var item = document.createElement('div');
-				item.className = 'ProjectName normal ' + _taskList[0].getID();
+				item.className = 'ProjectName';
 				item.style.position = 'relative';
 				item.style.bottom = '0px';
 				item.style.paddingLeft = '2px';
@@ -173,59 +152,31 @@ function Task(from, to, task, resource, progress, level, visible, identifier)
 
 				item.innerHTML = _taskList[0].getTask();
 				item.addEventListener("dblclick", function(link) { return function() {document.location.href = link}}(link));
-				item.addEventListener("click", changeClass);
 
 				column.appendChild(item);
 
-				var curLevel = 1;
-				var curDiv = document.createElement('div');
-				var newDiv = 0;
-				var elements = 0;
-				curDiv.className = 'level 1';
-				curDiv.style.marginLeft = 8 + 'px';
-				curDiv.style.paddingLeft = '8px';
-				column.appendChild(curDiv);
-
-				function append(container, task, id, level) {
-					var item = document.createElement('div');
-					item.className = 'ProjectName normal ' + id;
-					item.style.whiteSpace = 'nowrap';
-					item.innerHTML = task;
-					link = part + id;
-					item.style.paddingRight = '2px'
-					//item.style.marginLeft = level * 15 + 2 + 'px';
-					item.style.paddingBottom = '6px';
-					item.addEventListener("dblclick", function(link) { return function() {document.location.href = link}}(link));
-					item.addEventListener("click", changeClass);
-					container.appendChild(item);
-				}
-
-
 				for(i = 1; i < _taskList.length; i++) {
-					if (_taskList[i].getLevel() == curLevel) {
-						append(curDiv, _taskList[i].getTask(), _taskList[i].getID(), _taskList[i].getLevel());
+					item = document.createElement('div');
+					item.className = 'ProjectName';
+					item.style.whiteSpace = 'nowrap';
+					item.style.position = 'relative';
+					item.style.bottom = '0px';
+					item.style.paddingRight = '2px'
+					item.style.paddingLeft = _taskList[i].getLevel() * 15 + 2 + 'px';
+					item.style.paddingBottom = '6px';
+					
+					item.innerHTML = _taskList[i].getTask();
 
-					} else if (_taskList[i].getLevel() > curLevel) {
-						newDiv = document.createElement('div');
-						newDiv.className = 'level ' + _taskList[i].getLevel();
-						//newDiv.style.marginLeft = 5 + 'px';
-						curDiv.appendChild(newDiv);
-						curDiv = newDiv;
-						append(curDiv, _taskList[i].getTask(), _taskList[i].getID(), _taskList[i].getLevel());
-						curLevel = _taskList[i].getLevel();
-					} else {
-						elements = column.getElementsByClassName(_taskList[i].getLevel());
-						curDiv = elements[elements.length - 1];
-						append(curDiv, _taskList[i].getTask(), _taskList[i].getID(), _taskList[i].getLevel());
-						curLevel = _taskList[i].getLevel();
-					}
+					link = part + _taskList[i].getID();
+					item.addEventListener("dblclick", function(link) { return function() {document.location.href = link}}(link));
+					column.appendChild(item);
 				}
-				
+
 				var divType = "";
 				for(i = 0; i < _taskList.length; i++) //цикл с наслоением полос задач
 				{
 					if (_taskList[i].getVisible() == 1) {
-						divType = "GTask normal";
+						divType = "GTask";
 						_dateDiff = 0;
 						if (_taskList[i].getFrom() < _minDate) {
 							if (_taskList[i].getTo() < _minDate) {
@@ -233,18 +184,18 @@ function Task(from, to, task, resource, progress, level, visible, identifier)
 							} else if (_taskList[i].getTo() > _maxDate) {
 								_taskList[i].setFrom(_minDate);
 								_taskList[i].setTo(_maxDate);
-								divType = "beyond normal";
+								divType = "beyond";
 								_dateDiff = -1;
 							} else {
 								_taskList[i].setFrom(_minDate);
-								divType = "beyond normal";
+								divType = "beyond";
 							}
 						} else if (_taskList[i].getTo() > _maxDate) {
 							if (_taskList[i].getFrom() > _maxDate) {
 								continue;
 							} else {
 								_taskList[i].setTo(_maxDate);
-								divType = "beyond normal";
+								divType = "beyond";
 								_dateDiff = -1;
 							}
 						}
@@ -261,11 +212,10 @@ function Task(from, to, task, resource, progress, level, visible, identifier)
 						
 						var item2 = document.createElement('div');
 						
-						item2.className = divType + ' ' + _taskList[i].getID();
+						item2.className = divType;
 						item2.style.float = 'left';
 						item2.style.width = (27 * _dateDiff - 1) + "px"
 						item2.title = _dateDiff;
-						item2.addEventListener("click", changeClass);
 						var item3 = document.createElement('div');
 						item3.className = 'GProgress'
 						item3.style.width = _taskList[i].getProgress() + "%"

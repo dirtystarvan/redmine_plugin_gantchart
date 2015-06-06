@@ -1,0 +1,84 @@
+
+
+#switcher {
+        
+    width:86px;
+    height:24px;  
+    background-color:silver;
+    position:relative;
+    top:10px;
+    overflow:hidden;
+    white-space:nowrap;            
+    display: inline-block;
+
+    border-radius:100px;                
+    padding:2px;
+    box-shadow: inset 0px 3px 10px 0px rgba(0, 0, 0, 0.4), 0px 3px 10px 0px rgba(255, 255, 255, 0.4);
+    font-family:sans-serif;
+    font-size:14px;
+    -webkit-transition: all 0.3s ease-in-out;
+    background-size: 28px 28px;
+    
+}
+
+
+
+
+#rail {
+        position:absolute;
+        top:2px;
+        left:12px;
+        -webkit-transition: all 0.3s ease-in-out;
+        cursor: pointer;
+}
+
+
+#state1 {
+        display: inline-block;
+        height:24px;
+        position:relative;
+        top:-7px;
+        left:-4px;        
+        padding-left: 5px; 
+        color:hsl(30,20%,90%);;            
+    
+}
+
+#state2 {
+        display: inline-block;
+        height:24px;
+        position:relative;
+        top:-7px;
+        left:1px;                
+        left:1px;                
+        color:hsl(190,20%,90%);    
+
+}
+
+#slider {
+        display: inline-block;
+        height:24px;
+        width:24px;
+        position:relative;
+        border-radius:100px;  
+
+background-color:#ccc;
+        box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.2), inset 0px 1px 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+#ch{
+        display:none;
+}
+
+#ch:checked + #switcher #rail{
+        left:-51px;
+}
+
+
+#ch:not(:checked) + #switcher {
+        background-color: hsl(30,20%,50%);
+}
+
+#ch:checked + #switcher {
+        background-color: hsl(190,20%,50%);
+}

@@ -21,7 +21,8 @@
 		padding-left:5px;
 		font-family:tahoma, arial, verdana;
 		font-size:11px;
-		font-weight:bold;	
+		font-weight:bold;
+		text-align: center;	
 	}
 	
 	.GToDay
@@ -44,14 +45,90 @@
 		text-align:center;
 	}
 	
-	.GTask
+	div.GTask.changed, div.beyond.changed
 	{
-		border-top:1px solid #CACACA;
-		border-bottom:1px solid #CACACA;
+		border-top:1px solid #da7c0c;
+		border-bottom:1px solid #da7c0c;
 		height:14px;
-		background-color:yellow;
+		background-color: #ff843e;
+
+		-webkit-border-radius: 1px;
+    	-moz-border-radius: 1px;
+    	border-radius: 1px;
+
+    	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.2); //* эффект тени для блока кнопки *//
+		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		box-shadow: 0 1px 2px rgba(0,0,0,.2);
+
+    	background: #f78d1d; /*цвет фона кнопки для браузеров без поддержки CSS3*/
+		background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20)); /* для Webkit браузеров */
+		background: -moz-linear-gradient(top,  #faa51a,  #f47a20); /* для Firefox */
+        background-image: -o-linear-gradient(top,  #faa51a,  #f47a20); /* для Opera */
+	}
+
+	div.GTask.changed:hover, div.beyond.changed:hover{
+		background: #f47c20;
+		background: -webkit-gradient(linear, left top, left bottom, from(#f88e11), to(#f06015));
+		background: -moz-linear-gradient(top,  #f88e11,  #f06015);
+        background-image: -o-linear-gradient(top,  #f88e11,  #f06015);/* для Opera */
 	}
 	
+	.GTask {
+		border-top:1px solid #026F9C;
+		border-bottom:1px solid #026F9C;
+		height:14px;
+		background-color: #009EE0;
+
+		-webkit-border-radius: 1px;
+    	-moz-border-radius: 1px;
+    	border-radius: 1px;
+
+    	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.2); /* эффект тени для блока */
+		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		box-shadow: 0 1px 2px rgba(0,0,0,.2);
+
+    	background: #009EE0; /*цвет фона кнопки для браузеров без поддержки CSS3*/
+		background: -webkit-gradient(linear, left top, left bottom, from(#009EE0), to(#0272A1)); /* для Webkit браузеров */
+		background: -moz-linear-gradient(top,  #009EE0,  #0272A1); /* для Firefox */
+        background-image: -o-linear-gradient(top,  #009EE0,  #0272A1); /* для Opera */
+	}
+
+	.GTask:hover {
+		background: #0272A1;
+		background: -webkit-gradient(linear, left top, left bottom, from(#04729F), to(#0272A1));
+		background: -moz-linear-gradient(top,  #04729F,  #0272A1);
+        background-image: -o-linear-gradient(top,  #04729F,  #0272A1);/* для Opera */
+	}
+
+
+	.beyond {
+		border-top:1px solid #142c48;
+		border-bottom:1px solid #142c48;
+		height:14px;
+		background-color: #3971b1;
+
+		-webkit-border-radius: 1px;
+    	-moz-border-radius: 1px;
+    	border-radius: 1px;
+
+    	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.2); /* эффект тени для блока */
+		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		box-shadow: 0 1px 2px rgba(0,0,0,.2);
+
+    	background: #3961b1; /*цвет фона кнопки для браузеров без поддержки CSS3*/
+		background: -webkit-gradient(linear, left top, left bottom, from(#3961b1), to(#214E83)); /* для Webkit браузеров */
+		background: -moz-linear-gradient(top,  #3961b1,  #214E83); /* для Firefox */
+        background-image: -o-linear-gradient(top,  #3961b1,  #214E83); /* для Opera */
+	}
+
+	.beyond:hover {
+		background: #7a7a7a;
+		background: -webkit-gradient(linear, left top, left bottom, from(#656667), to(#7a7a7a));
+		background: -moz-linear-gradient(top,  #656667,  #7a7a7a);
+        background-image: -o-linear-gradient(top,  #656667,  #7a7a7a);/* для Opera */
+	}
+
+
 	.GProgress
 	{
 		background-color:black;
@@ -60,10 +137,27 @@
 		margin-top:5px;
 	}
 
-	.ProjectName {
+	.ProjectName, .ProjectName:hover {
 		cursor: default;
+		font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-weight: bold;
 	}
 
-	.ProjectName:hover {
-		cursor: default;
+	div.ProjectName.changed {
+		font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-weight: bold;
+		text-shadow: 0px 0px 2px #889191;
+	}
+
+	.level {
+		border-left: 2px solid #4C5866;
+		padding-left: 2px;
+		margin-left: 15px;
+		box-shadow: -4px 0 2px -2px rgba(0,0,0,0.4);
+	}
+
+	.GTaskTitle {
+		text-align: center;
+		font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-weight: bold;
 	}
