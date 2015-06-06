@@ -9,12 +9,11 @@ function Task(from, to, task, resource, progress, level, visible, identifier)
 		var _visible = visible;
 		var _identifier = identifier;
 		var dvArr = from.split('-');
-		_from.setFullYear(parseInt(dvArr[0], 10), parseInt(dvArr[1], 10) - 1, parseInt(dvArr[2], 10));
+		_from.setFullYear(parseInt(dvArr[0], 10), parseInt(dvArr[1], 10) - 1, parseInt(dvArr[2], 10)); //почему -1?
 		dvArr = to.split('-'); 
 		_to.setFullYear(parseInt(dvArr[0], 10), parseInt(dvArr[1], 10) - 1, parseInt(dvArr[2], 10));		
 		
-		alert(dvArr[2]);
-
+		
 		this.getFrom = function(){ return _from};
 		this.getTo = function(){ return _to};
 		this.getTask = function(){ return _task};

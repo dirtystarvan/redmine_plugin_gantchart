@@ -6,7 +6,11 @@ private
 def rec(parent)
    	parent[:descendants].each do |project|
 		@projects[project.id] = {}
-		@projects[project.id][:descendants] = Project.all(conditions: {parent_id: project.id})
+		if @checked then
+			@projects[project.id][:descendants] = Project.all(conditions: {parent_id: project.id}, order: 'created_on ASC')
+		else
+			@projects[project.id][:descendants] = Project.all(conditions: {parent_id: project.id, status: 1}, order: 'created_on ASC')
+		end
 		@projects[project.id][:visible] = 1
 
 		@temp = Issue.first(select: 'start_date', conditions: {project_id: project.id}, order: 'start_date ASC')
@@ -61,7 +65,11 @@ public
 	@projects = {} 	
   	@root = Project.find(params[:id].to_s)
  	@projects[@root.id] = {}
- 	@projects[@root.id][:descendants] = Project.all(conditions: {parent_id: @root.id})
+ 	if @checked then 
+ 		@projects[@root.id][:descendants] = Project.all(conditions: {parent_id: @root.id}, order: 'created_on ASC')
+ 	else
+ 		@projects[@root.id][:descendants] = Project.all(conditions: {parent_id: @root.id, status: 1}, order: 'created_on ASC')
+ 	end
  	@projects[@root.id][:visible] = 1
 
  	@temp = Issue.first(select: 'start_date', conditions: {project_id: @root.id}, order: 'start_date ASC')

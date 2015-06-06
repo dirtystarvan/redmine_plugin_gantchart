@@ -2,7 +2,7 @@
 
 #switcher {
         
-    width:86px;
+    width:93px;
     height:24px;  
     background-color:silver;
     position:relative;
@@ -22,16 +22,13 @@
 }
 
 
-
-
 #rail {
         position:absolute;
         top:2px;
-        left:12px;
+        left:19px;
         -webkit-transition: all 0.3s ease-in-out;
         cursor: pointer;
 }
-
 
 #state1 {
         display: inline-block;
@@ -50,7 +47,7 @@
         position:relative;
         top:-7px;
         left:1px;                
-        left:1px;                
+        left:3px;                
         color:hsl(190,20%,90%);    
 
 }
