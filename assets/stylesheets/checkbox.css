@@ -14,9 +14,10 @@
     border-radius:100px;                
     padding:2px;
     box-shadow: inset 0px 3px 10px 0px rgba(0, 0, 0, 0.4), 0px 3px 10px 0px rgba(255, 255, 255, 0.4);
-    font-family:sans-serif;
-    font-size:14px;
+    font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    
     -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
     background-size: 28px 28px;
     
 }
@@ -27,16 +28,18 @@
         top:2px;
         left:19px;
         -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
         cursor: pointer;
 }
 
 #state1 {
         display: inline-block;
         height:24px;
+        width: 50px;
         position:relative;
         top:-7px;
         left:-4px;        
-        padding-left: 5px; 
+        padding-left: 3px; 
         color:hsl(30,20%,90%);;            
     
 }
@@ -59,7 +62,7 @@
         position:relative;
         border-radius:100px;  
 
-background-color:#ccc;
+        background-color:#E8E8E8;
         box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.2), inset 0px 1px 1px 1px rgba(255, 255, 255, 0.7);
 }
 
@@ -78,4 +81,70 @@ background-color:#ccc;
 
 #ch:checked + #switcher {
         background-color: hsl(190,20%,50%);
+}
+
+
+#formkeeper * {
+    font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#formkeeper select, #formkeeper select:hover {
+    border: 1px solid #A9A9A9;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+
+     -moz-appearance: none;
+     text-indent: 0.01px; 
+     text-overflow: '';
+
+
+    background: #FEFEFE;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FEFEFE), to(#E8E8E8));
+    background: -moz-linear-gradient(top,  #FEFEFE,  #E8E8E8);
+    background-image: -o-linear-gradient(top,  #FEFEFE,  #E8E8E8);/* для Opera */
+    height: 28px;
+
+    box-shadow:  0px 1px 2px #C0BFBF;
+}
+
+#formkeeper select:hover {
+    box-shadow:  0px 0px 3px #C0BFBF;
+}
+
+#apply, #apply:hover {
+    border: 1px solid #A9A9A9;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    
+    background: #FEFEFE;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FEFEFE), to(#E8E8E8));
+    background: -moz-linear-gradient(top,  #FEFEFE,  #E8E8E8);
+    background-image: -o-linear-gradient(top,  #FEFEFE,  #E8E8E8);/* для Opera */
+    height: 29px;
+    box-shadow:  0px 1px 2px #C0BFBF;
+}
+
+#apply:hover {
+    background: #E0E0E0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E0E0E0), to(#E8E8E8));
+    background: -moz-linear-gradient(top,  #E0E0E0,  #E8E8E8);
+    background-image: -o-linear-gradient(top,  #E0E0E0,  #E8E8E8);
+}
+
+#apply:active {
+    box-shadow:  0px 1px 3px #8c8c8c inset;
+}
+
+#months, #months:hover {
+    height: 24px;
+    text-align: center;
+
+    border: 1px solid #A9A9A9;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+
+    box-shadow:  0px 0px 2px #C0BFBF inset, -1px -1px 1px #C0BFBF;
 }

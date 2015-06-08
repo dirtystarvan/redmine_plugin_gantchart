@@ -16,7 +16,7 @@
 <h2> Gantt chart </h2>
 
 <% form_tag({:controller => 'chart', :action => 'index', :months => params[:months], :month => params[:month], :year => params[:year], :check => params[:check]}, :method => :get, :id => 'query_form') do %>
-	<p>
+	<p id="formkeeper">
 	<%= text_field_tag :months, @monthsCounter ,:size => 2 %>
 	<%= label_tag('months', "месяца с", id: 'MLabel') %>
 	<%= select_tag(:month, options_for_select([['Января', 1], ['Февраля', 2], ['Марта', 3], ['Апреля', 4], ['Мая', 5], ['Июня', 6], ['Июля', 7], ['Августа', 8], ['Сентября', 9], ['Октября', 10], ['Ноября', 11], ['Декабря', 12]], @DateSelect.month)) %>

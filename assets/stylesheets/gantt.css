@@ -141,7 +141,13 @@
 		cursor: default;
 		font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
 		font-weight: bold;
+		height: 14px;
 	}
+
+	.ProjectName:hover {
+		text-shadow: 0px 0px 2px #889191;
+	}
+
 
 	div.ProjectName.changed {
 		font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;

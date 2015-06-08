@@ -165,10 +165,10 @@ function Task(from, to, task, resource, progress, level, visible, identifier)
 				var item = document.createElement('div');
 				item.className = 'ProjectName normal ' + _taskList[0].getID();
 				item.style.position = 'relative';
-				item.style.bottom = '0px';
+				item.style.bottom = '2px';
 				item.style.paddingLeft = '2px';
-				item.style.paddingBottom = '7px';
-				item.style.paddingTop = '10px';
+				item.style.paddingBottom = '5px';
+				item.style.paddingTop = '6px';
 
 				item.innerHTML = _taskList[0].getTask();
 				item.addEventListener("dblclick", function(link) { return function() {document.location.href = link}}(link));
@@ -192,6 +192,7 @@ function Task(from, to, task, resource, progress, level, visible, identifier)
 					item.innerHTML = task;
 					link = part + id;
 					item.style.paddingRight = '2px'
+					item.style.bottom = '6px';
 					//item.style.marginLeft = level * 15 + 2 + 'px';
 					item.style.paddingBottom = '6px';
 					item.addEventListener("dblclick", function(link) { return function() {document.location.href = link}}(link));
