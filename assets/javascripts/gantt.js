@@ -165,6 +165,7 @@ function Task(from, to, task, resource, progress, level, visible, identifier)
 				var item = document.createElement('div');
 				item.className = 'ProjectName normal ' + _taskList[0].getID();
 				item.style.position = 'relative';
+				item.style.whiteSpace = 'nowrap';
 				item.style.bottom = '2px';
 				item.style.paddingLeft = '2px';
 				item.style.paddingBottom = '5px';

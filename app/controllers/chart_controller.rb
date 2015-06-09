@@ -12,18 +12,25 @@ def rec(parent)
 			@projects[project.id][:descendants] = Project.all(conditions: {parent_id: project.id, status: 1}, order: 'created_on ASC')
 		end
 		@projects[project.id][:visible] = 1
+		@projects[project.id][:progress] = 0
 
-		@temp = Issue.first(select: 'start_date', conditions: {project_id: project.id}, order: 'start_date ASC')
+		@temp = Issue.first(select: 'start_date', conditions: "project_id = #{project.id} AND start_date IS NOT NULL", order: 'start_date ASC')
 		if @temp.nil? then @projects[project.id][:startDate] = @temp else @projects[project.id][:startDate] = @temp.start_date end
 
-		@temp = Issue.first(select: 'due_date', conditions: {project_id: project.id}, order: 'due_date DESC')
+		@temp = Issue.first(select: 'due_date', conditions: "project_id = #{project.id} AND due_date IS NOT NULL", order: 'due_date DESC')
 		if @temp.nil? then @projects[project.id][:dueDate] = @temp else @projects[project.id][:dueDate] = @temp.due_date end
+
 				
 		if @projects[project.id][:descendants].any? then
 			@projects[project.id][:level] = parent[:level] + 1
 			rec(@projects[project.id])
 		end
 
+		#получение progress и накопление родительской суммы
+		@projects[project.id][:progress] += Issue.average("done_ratio", conditions: {parent_id: nil, project_id: project.id}).to_f
+		@projects[project.id][:progress] = @projects[project.id][:progress] / (@projects[project.id][:descendants].length + 1)
+
+		parent[:progress] += @projects[project.id][:progress]
 		#получение min и maxDate
 		#обновление дат родителя
 		#установка visible
@@ -72,12 +79,15 @@ public
  	end
  	@projects[@root.id][:visible] = 1
 
- 	@temp = Issue.first(select: 'start_date', conditions: {project_id: @root.id}, order: 'start_date ASC')
+ 	#@temp = Issue.first(select: 'start_date', conditions: {project_id: @root.id}, order: 'start_date ASC')
+ 	@temp = Issue.first(select: 'start_date', conditions: "project_id = #{@root.id} AND start_date IS NOT NULL", order: 'start_date ASC')
  	if @temp.nil? then @projects[@root.id][:startDate] = @temp else @projects[@root.id][:startDate] = @temp.start_date end #возможен возврат как nil (таблица пуста) так и object.start_date == nil (не заданы даты)
 
- 	@temp = Issue.first(select: 'due_date', conditions: {project_id: @root.id}, order: 'due_date DESC')
+ 	#@temp = Issue.first(select: 'due_date', conditions: {project_id: @root.id}, order: 'due_date DESC')
+ 	@temp = Issue.first(select: 'due_date', conditions: "project_id = #{@root.id} AND due_date IS NOT NULL", order: 'due_date DESC')
  	if @temp.nil? then @projects[@root.id][:dueDate] = @temp else @projects[@root.id][:dueDate] = @temp.due_date end
 
+ 	@projects[@root.id][:progress] = Issue.average("done_ratio", conditions: {parent_id: nil, project_id: @root.id}).to_f
 		
 	if @projects[@root.id][:dueDate].nil? then
 		if @projects[@root.id][:startDate].nil? then
@@ -101,6 +111,9 @@ public
 		rec(@projects[@root.id]) 
 	end
 	if @projects[@root.id][:startDate].nil? || @projects[@root.id][:dueDate].nil? then @projects[@root.id][:visible] = 0 end #если даты root не заданы на основе дочерних проектов
+
+	@projects[@root.id][:progress] = @projects[@root.id][:progress] / (@projects[@root.id][:descendants].length + 1)
+
 	@years = Range.new(@minDate.year, @maxDate.year).to_a.map! { |item| item = [item.to_s, item] }
   end
 end
